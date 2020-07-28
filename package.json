@@ -21,8 +21,9 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "format": "prettier --write src/**/*.{ts,tsx}",
-    "lint": "eslint --fix \"src/**/*.{ts,tsx}\"",
-    "precommit-checks": "yarn format && yarn lint"
+    "lint": "eslint --fix src/**/*.{ts,tsx}",
+    "precommit-checks": "yarn format && yarn lint",
+    "pre-push-test": "CI=true react-scripts test"
   },
   "browserslist": {
     "production": [
@@ -40,12 +41,19 @@
     "eslint-config-airbnb-typescript-prettier": "^3.1.0",
     "eslint-plugin-jest": "^23.19.0",
     "husky": "^4.2.5",
+    "lint-staged": ">=10",
     "prettier": "^2.0.5"
   },
   "husky": {
     "hooks": {
-      "pre-commit": "yarn precommit-checks",
-      "pre-push": "yarn test"
+      "pre-commit": "lint-staged",
+      "pre-push": "yarn pre-push-test"
     }
+  },
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ]
   }
 }
